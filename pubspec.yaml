@@ -1,7 +1,6 @@
 name: mms
 description: A new flutter plugin project.
 version: 0.1.0
-author:
 repository: https://github.com/yoonj4/mms
 
 environment:
