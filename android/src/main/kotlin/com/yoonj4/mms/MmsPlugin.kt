@@ -29,6 +29,13 @@ class MmsPlugin: FlutterPlugin, MethodCallHandler {
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
     } else if (call.method == "sendVideo") {
+      val videoFilePath = call.argument<String>("videoFilePath")
+      val recipientNumbers = call.argument<List<String>>("recipientNumbers")
+
+      if (videoFilePath != null && recipientNumbers != null) {
+        mms.sendVideo(videoFilePath, recipientNumbers)
+      }
+
       result.success(true)
     } else {
       result.notImplemented()

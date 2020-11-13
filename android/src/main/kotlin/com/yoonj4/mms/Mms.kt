@@ -1,6 +1,8 @@
 package com.yoonj4.mms
 
+import android.content.ContentResolver
 import android.content.Context
+import android.net.Uri.Builder
 import android.telephony.SmsManager
 import androidx.annotation.NonNull
 
@@ -9,7 +11,15 @@ class Mms(@NonNull private val context: Context) {
 
     fun sendVideo(@NonNull videoFilePath: String, @NonNull recipientNumbers: List<String>) {
 
-        smsManager.sendMultimediaMessage(context)
-        //TODO: figure out contentUri
+        val contentUri = Builder()
+                        .authority(context.packageName + ".fileprovider")
+                        .path(videoFilePath)
+                        .scheme(ContentResolver.SCHEME_CONTENT)
+                        .build()
+
+        recipientNumbers.forEach {
+            smsManager.sendMultimediaMessage(context, contentUri, it, null, null)
+        }
+        // TODO: Figure out if I need PendingIntent
     }
 }

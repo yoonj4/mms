@@ -108,16 +108,18 @@ class _MyAppState extends State<MyApp> {
       showInSnackBar('Video recorded to: $_videoPath');
       Permission.contacts.request().isGranted.then((value) {
         if (value) {
-          ContactsService.getContacts()
-              .then((value) {
-                  if (value.isNotEmpty) {
-                    Mms().sendVideo(_videoPath,
-                        value.map((e) => e.phones.first.value).toList());
-                  } else {
-                    showInSnackBar('Please add contacts.');
-                  }
-              }
-          );
+          Permission.sms.request().isGranted.then((value) {
+            if (value) {
+              ContactsService.getContacts().then((value) {
+                if (value.isNotEmpty) {
+                  Mms().sendVideo(_videoPath,
+                      value.map((e) => e.phones.first.value).toList());
+                } else {
+                  showInSnackBar('Please add contacts.');
+                }
+              });
+            }
+          });
         }
       });
     });
