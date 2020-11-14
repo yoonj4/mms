@@ -1,6 +1,6 @@
 # mms
 
-A new flutter plugin project.
+Flutter plugin for MMS functionality. Currently only supports sending a video on Android.
 
 ## Getting Started
 
