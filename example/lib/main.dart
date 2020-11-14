@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -106,21 +105,10 @@ class _MyAppState extends State<MyApp> {
     stopVideoRecording().then((_) {
       if (mounted) setState(() {});
       showInSnackBar('Video recorded to: $_videoPath');
-      Permission.contacts.request().isGranted.then((value) {
-        if (value) {
-          Permission.sms.request().isGranted.then((value) {
-            if (value) {
-              ContactsService.getContacts().then((value) {
-                if (value.isNotEmpty) {
-                  Mms().sendVideo(_videoPath,
-                      value.map((e) => e.phones.first.value).toList());
-                } else {
-                  showInSnackBar('Please add contacts.');
-                }
-              });
-            }
-          });
-        }
+      Permission.sms.request().isGranted.then((value) {
+
+        // Add phone number(s) as a string here in a list (e.g. ['123-456-7890'])
+        Mms().sendVideo(_videoPath, ['']);
       });
     });
   }

@@ -13,7 +13,6 @@ dependencies:
     sdk: flutter
   camera: ^0.5.8+11
   path_provider: ^1.6.24
-  contacts_service: ^0.4.6
   permission_handler: ^5.0.1+1
 
   mms:
