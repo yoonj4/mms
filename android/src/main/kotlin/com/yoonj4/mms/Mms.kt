@@ -18,8 +18,11 @@ class Mms(@NonNull private val context: Context) {
                         .build()
 
         recipientNumbers.forEach {
-            smsManager.sendMultimediaMessage(context, contentUri, it, null, null)
+            smsManager.sendMultimediaMessage(context,
+                    contentUri,
+                    it,
+                    null,
+                    null)
         }
-        // TODO: Figure out if I need PendingIntent
     }
 }
