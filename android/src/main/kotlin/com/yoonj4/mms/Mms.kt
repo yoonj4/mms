@@ -29,6 +29,7 @@ class Mms(@NonNull private val context: Context) {
             sendIntent.putExtra("address", it)
             sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
             sendIntent.flags = FLAG_ACTIVITY_NEW_TASK
+            sendIntent.type = "video/*"
             startActivity(context, sendIntent, null)
         }
 //        val contentUri = Builder()
