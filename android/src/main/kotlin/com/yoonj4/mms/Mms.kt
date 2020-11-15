@@ -1,28 +1,27 @@
 package com.yoonj4.mms
 
-import android.content.ContentResolver
 import android.content.Context
-import android.net.Uri.Builder
-import android.telephony.SmsManager
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat.startActivity
+
 
 class Mms(@NonNull private val context: Context) {
-    private val smsManager: SmsManager = SmsManager.getDefault()
 
     fun sendVideo(@NonNull videoFilePath: String, @NonNull recipientNumbers: List<String>) {
 
-        val contentUri = Builder()
-                        .authority(context.packageName + ".fileprovider")
-                        .path(videoFilePath)
-                        .scheme(ContentResolver.SCHEME_CONTENT)
-                        .build()
-
+        val contentUri = Uri.parse(videoFilePath)
         recipientNumbers.forEach {
-            smsManager.sendMultimediaMessage(context,
-                    contentUri,
-                    it,
-                    null,
-                    null)
+            val sendIntent = Intent(Intent.ACTION_SEND)
+            sendIntent.putExtra("address", it)
+            sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
+            startActivity(context, sendIntent, null)
         }
+//        val contentUri = Builder()
+//                        .authority(context.packageName + ".fileprovider")
+//                        .path(videoFilePath)
+//                        .scheme(ContentResolver.SCHEME_CONTENT)
+//                        .build()
     }
 }
