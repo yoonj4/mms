@@ -2,6 +2,7 @@ package com.yoonj4.mms
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat.startActivity
@@ -16,6 +17,7 @@ class Mms(@NonNull private val context: Context) {
             val sendIntent = Intent(Intent.ACTION_SEND)
             sendIntent.putExtra("address", it)
             sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
+            sendIntent.flags = FLAG_ACTIVITY_NEW_TASK
             startActivity(context, sendIntent, null)
         }
 //        val contentUri = Builder()
