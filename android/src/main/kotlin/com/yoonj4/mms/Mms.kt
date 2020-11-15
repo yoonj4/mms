@@ -12,10 +12,10 @@ class Mms(@NonNull private val context: Context) {
 
     fun sendVideo(@NonNull videoFilePath: String, @NonNull recipientNumbers: List<String>) {
 
-        val contentUri = Uri.parse(videoFilePath)
+        val contentUri = Uri.parse("file://$videoFilePath")
         recipientNumbers.forEach {
             val sendIntent = Intent(Intent.ACTION_SEND)
-            sendIntent.putExtra("address", "file://$it")
+            sendIntent.putExtra("address", it)
             sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
             sendIntent.flags = FLAG_ACTIVITY_NEW_TASK
             startActivity(context, sendIntent, null)
