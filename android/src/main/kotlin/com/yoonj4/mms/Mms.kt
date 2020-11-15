@@ -12,7 +12,7 @@ class Mms(@NonNull private val context: Context) {
 
     fun sendVideo(@NonNull videoFilePath: String, @NonNull recipientNumbers: List<String>) {
 
-        val contentUri = Uri.parse("file://$videoFilePath")
+        val contentUri = Uri.parse("content://$videoFilePath")
         recipientNumbers.forEach {
             val sendIntent = Intent(Intent.ACTION_SEND)
             sendIntent.putExtra("address", it)
