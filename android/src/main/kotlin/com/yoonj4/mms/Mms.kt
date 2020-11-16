@@ -1,17 +1,16 @@
 package com.yoonj4.mms
 
 import android.content.Context
-import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Build
 import android.os.StrictMode
+import android.telephony.SmsManager
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat.startActivity
 import java.io.File
 import java.lang.reflect.Method
 
 class Mms(@NonNull private val context: Context) {
+    private val smsManager: SmsManager = SmsManager.getDefault()
 
     fun sendVideo(@NonNull videoFilePath: String, @NonNull recipientNumbers: List<String>) {
 
@@ -24,18 +23,17 @@ class Mms(@NonNull private val context: Context) {
             }
         }
         val contentUri = Uri.fromFile(File(videoFilePath))
-        recipientNumbers.forEach {
-            val sendIntent = Intent(Intent.ACTION_SEND)
-            sendIntent.putExtra("address", it)
-            sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
-            sendIntent.flags = FLAG_ACTIVITY_NEW_TASK
-            sendIntent.type = "video/*"
-            startActivity(context, sendIntent, null)
-        }
 //        val contentUri = Builder()
-//                        .authority(context.packageName + ".fileprovider")
-//                        .path(videoFilePath)
-//                        .scheme(ContentResolver.SCHEME_CONTENT)
-//                        .build()
+//                .authority(context.packageName + ".fileprovider")
+//                .path(videoFilePath)
+//                .scheme(ContentResolver.SCHEME_CONTENT)
+//                .build()
+        recipientNumbers.forEach {
+            smsManager.sendMultimediaMessage(context,
+                    contentUri,
+                    it,
+                    null,
+                    null)
+        }
     }
 }
