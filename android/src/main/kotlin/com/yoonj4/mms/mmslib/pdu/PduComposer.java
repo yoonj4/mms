@@ -175,7 +175,7 @@ public class PduComposer {
                 }
                 break;
             default:
-                return null;
+                return mMessage.toByteArray();
         }
 
         return mMessage.toByteArray();
