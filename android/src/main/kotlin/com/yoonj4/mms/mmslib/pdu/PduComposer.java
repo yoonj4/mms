@@ -801,12 +801,12 @@ public class PduComposer {
         }
 
         // Cc
-        if (appendHeader(PduHeaders.CC) != PDU_COMPOSE_CONTENT_ERROR) {
+        else if (appendHeader(PduHeaders.CC) != PDU_COMPOSE_CONTENT_ERROR) {
             recipient = true;
         }
 
         // Bcc
-        if (appendHeader(PduHeaders.BCC) != PDU_COMPOSE_CONTENT_ERROR) {
+        else if (appendHeader(PduHeaders.BCC) != PDU_COMPOSE_CONTENT_ERROR) {
             recipient = true;
         }
 
