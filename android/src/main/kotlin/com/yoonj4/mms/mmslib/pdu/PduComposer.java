@@ -29,6 +29,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static android.content.ContentValues.TAG;
+
 public class PduComposer {
     /**
      * Address type.
@@ -151,6 +153,7 @@ public class PduComposer {
     public byte[] make() {
         // Get Message-type.
         int type = mPdu.getMessageType();
+        Log.d(TAG, "PDU message type: " + type);
 
         /* make the message */
         switch (type) {
