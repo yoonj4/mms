@@ -155,8 +155,8 @@ public class PduHeaders {
     public static final int MMS_VERSION_1_1                 = ((1 << 4) | 1);
     public static final int MMS_VERSION_1_0                 = ((1 << 4) | 0);
 
-    // Current version is 1.2.
-    public static final int CURRENT_MMS_VERSION             = MMS_VERSION_1_2;
+    // Current version is 1.3.
+    public static final int CURRENT_MMS_VERSION             = MMS_VERSION_1_3;
 
     /**
      *  From field type components.
