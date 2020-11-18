@@ -114,7 +114,7 @@ class Mms(@NonNull private val context: Context) {
         val part = PduPart()
         // Set Content-Type.
         part.contentType = ContentType.VIDEO_MP4.toByteArray()
-        part.data = videoFilePath.toByteArray()
+        part.data = File(videoFilePath).readBytes()
         part.filename = videoFilePath.toByteArray()
         pb.addPart(part)
         return part.data.size
