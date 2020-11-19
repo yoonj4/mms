@@ -90,6 +90,7 @@ class Mms(@NonNull private val context: Context) {
         // Body
         val body = PduBody()
         val size = addVideoPart(body, videoFilePath)
+        Log.d(TAG, "PDU body size: $size")
         req.body = body
         // Message size
         req.messageSize = size.toLong()
