@@ -13,12 +13,12 @@ class Mms {
     return version;
   }
 
-  Future<bool> sendVideo(
+  void sendVideo(
       final String videoFilePath,
       final List<String> recipientNumbers) {
     assert(videoFilePath != null);
     assert(recipientNumbers != null);
     assert(recipientNumbers.isNotEmpty);
-    return MmsPlatform.instance.sendVideo(videoFilePath, recipientNumbers);
+    MmsPlatform.instance.sendVideo(videoFilePath, recipientNumbers);
   }
 }

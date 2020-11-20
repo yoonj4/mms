@@ -28,15 +28,6 @@ class Mms(@NonNull private val context: Context) {
 
     fun sendVideo(@NonNull videoFilePath: String, @NonNull recipientNumbers: List<String>) {
 
-//        if (Build.VERSION.SDK_INT >= 24) {
-//            try {
-//                val m: Method = StrictMode::class.java.getMethod("disableDeathOnFileUriExposure")
-//                m.invoke(null)
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//        val contentUri = Uri.fromFile(File(videoFilePath))
         val fileName = "send." + abs(mRandom.nextLong()).toString() + ".dat"
         val mSendFile = File(context.cacheDir, fileName)
 

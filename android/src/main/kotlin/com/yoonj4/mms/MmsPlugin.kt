@@ -34,7 +34,6 @@ class MmsPlugin: FlutterPlugin, MethodCallHandler {
 
       if (videoFilePath != null && recipientNumbers != null) {
         mms.sendVideo(videoFilePath, recipientNumbers)
-        result.success(true)
       } else {
         result.error(
                 "InvalidArguments",
