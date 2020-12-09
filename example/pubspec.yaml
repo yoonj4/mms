@@ -11,9 +11,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  camera: ^0.5.8+11
-  path_provider: ^1.6.24
-  permission_handler: ^5.0.1+1
 
   mms:
     # When depending on this package from a real application you should use:

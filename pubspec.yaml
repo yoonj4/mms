@@ -1,7 +1,8 @@
 name: mms
 description: A new flutter plugin project.
-version: 1.0.0
-repository: https://github.com/yoonj4/mms
+version: 0.0.1
+author:
+homepage:
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -10,12 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  mms_platform_interface: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.9.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

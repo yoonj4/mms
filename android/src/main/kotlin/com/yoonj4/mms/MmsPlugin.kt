@@ -7,6 +7,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.plugin.common.PluginRegistry.Registrar
 
 /** MmsPlugin */
 class MmsPlugin: FlutterPlugin, MethodCallHandler {
@@ -16,31 +17,14 @@ class MmsPlugin: FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
 
-  @NonNull private lateinit var mms : Mms
-
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "mms")
     channel.setMethodCallHandler(this)
-
-    mms = Mms(flutterPluginBinding.applicationContext)
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else if (call.method == "sendVideo") {
-      val videoFilePath = call.argument<String>("videoFilePath")
-      val recipientNumbers = call.argument<List<String>>("recipientNumbers")
-
-      if (videoFilePath != null && recipientNumbers != null) {
-        mms.sendVideo(videoFilePath, recipientNumbers)
-      } else {
-        result.error(
-                "InvalidArguments",
-                "videoFilePath and recipientNumbers must be non-null",
-                null
-        )
-      }
     } else {
       result.notImplemented()
     }
