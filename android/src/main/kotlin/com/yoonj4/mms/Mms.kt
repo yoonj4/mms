@@ -3,6 +3,7 @@ package com.yoonj4.mms
 import android.content.ContentResolver
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.net.Uri.Builder
 import android.telephony.SmsManager
@@ -62,6 +63,11 @@ class Mms(@NonNull private val context: Context) {
         } else {
             Log.e(TAG, "Error writing sending Mms")
         }
+    }
+
+    fun sendVideoWithDefaultApp(message: String, @NonNull videoFilePath: String, @NonNull recipientNumbers: List<String>) {
+        val mmsIntent = Intent(Intent.ACTION_SEND)
+        mmsIntent.putExtra() // TODO: Figure out how to do multirecipient https://stackoverflow.com/questions/15265511/how-to-send-mms-from-android-app
     }
 
     private fun buildPdu(context: Context, recipients: List<String>, videoFilePath: String): ByteArray? {

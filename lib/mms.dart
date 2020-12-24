@@ -21,4 +21,14 @@ class Mms {
     assert(recipientNumbers.isNotEmpty);
     MmsPlatform.instance.sendVideo(videoFilePath, recipientNumbers);
   }
+
+  void sendVideoWithDefaultApp(
+      final String message,
+      final String videoFilePath,
+      final List<String> recipientNumbers) {
+    assert(videoFilePath != null);
+    assert(recipientNumbers != null);
+    assert(recipientNumbers.isNotEmpty);
+    MmsPlatform.instance.sendVideoWithDefaultApp(message, videoFilePath, recipientNumbers);
+  }
 }

@@ -41,6 +41,20 @@ class MmsPlugin: FlutterPlugin, MethodCallHandler {
                 null
         )
       }
+    } else if (call.method == "sendVideoWithDefaultApp") {
+      val message = call.argument<String>("message")
+      val videoFilePath = call.argument<String>("videoFilePath")
+      val recipientNumbers = call.argument<List<String>>("recipientNumbers")
+
+      if (videoFilePath != null && recipientNumbers != null) {
+        mms.sendVideoWithDefaultApp(message, videoFilePath, recipientNumbers)
+      } else {
+        result.error(
+                "InvalidArguments",
+                "videoFilePath and recipientNumbers must be non-null",
+                null
+        )
+      }
     } else {
       result.notImplemented()
     }
