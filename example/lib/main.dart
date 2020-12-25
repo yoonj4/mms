@@ -56,28 +56,47 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.videocam),
-              color: Colors.blue,
-              onPressed: _controller != null &&
-                  _controller.value.isInitialized &&
-                  !_controller.value.isRecordingVideo
-                  ? onVideoRecordButtonPressed
-                  : null,
+        body: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.videocam),
+                  color: Colors.blue,
+                  onPressed: _controller != null &&
+                      _controller.value.isInitialized &&
+                      !_controller.value.isRecordingVideo
+                      ? onVideoRecordButtonPressed
+                      : null,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.stop),
+                  color: Colors.red,
+                  onPressed: _controller != null &&
+                      _controller.value.isInitialized &&
+                      _controller.value.isRecordingVideo
+                      ? onSendDirectlyButtonPressed
+                      : null,
+                )
+              ],
             ),
-            IconButton(
-              icon: const Icon(Icons.stop),
-              color: Colors.red,
-              onPressed: _controller != null &&
-                  _controller.value.isInitialized &&
-                  _controller.value.isRecordingVideo
-                  ? onStopButtonPressed
-                  : null,
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.stop),
+                  color: Colors.yellow,
+                  onPressed: _controller != null &&
+                      _controller.value.isInitialized &&
+                      _controller.value.isRecordingVideo
+                      ? onUseDefaultButtonPressed
+                      : null,
+                )
+              ],
+            ),
           ],
         ),
       ),
@@ -101,7 +120,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void onStopButtonPressed() {
+  void onSendDirectlyButtonPressed() {
     stopVideoRecording().then((_) {
       if (mounted) setState(() {});
       showInSnackBar('Video recorded to: $_videoPath');
@@ -113,13 +132,25 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void onUseDefaultButtonPressed() {
+    stopVideoRecording().then((_) {
+      if (mounted) setState(() {});
+      showInSnackBar('Video recorded to: $_videoPath');
+      Permission.sms.request().isGranted.then((value) {
+
+        // Add phone number(s) as a string here in a list (e.g. ['123-456-7890'])
+        Mms().sendVideoWithDefaultApp(null, _videoPath, ['1234567890']);
+      });
+    });
+  }
+
   Future<String> startVideoRecording() async {
     if (!_controller.value.isInitialized) {
       showInSnackBar('Error: select a camera first.');
       return null;
     }
 
-    final Directory extDir = await getApplicationDocumentsDirectory();
+    final Directory extDir = await getExternalStorageDirectory();
     final String dirPath = '${extDir.path}/Movies/flutter_test';
     await Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.mp4';
