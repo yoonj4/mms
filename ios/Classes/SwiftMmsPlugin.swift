@@ -1,7 +1,11 @@
 import Flutter
 import UIKit
+import MessageUI
 
-public class SwiftMmsPlugin: NSObject, FlutterPlugin {
+public class SwiftMmsPlugin: NSObject, FlutterPlugin, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate {
+    var result: FlutterResult?
+    var _arguments = [String: Any]()
+
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "mms", binaryMessenger: registrar.messenger())
     let instance = SwiftMmsPlugin()
@@ -9,14 +13,49 @@ public class SwiftMmsPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    if (call.method == "sendVideoWithDefaultApp") {
-        let arguments = call.arguments as! Dictionary<String, AnyObject>
-        let message = arguments["message"] as? String
-        let videoFilePath = arguments["videoFilePath"] as! String
-        let recipientNumbers = arguments["recipientNumbers"] as! [String]
-        Mms().sendVideoWithDefaultApp(message, videoFilePath, recipientNumbers)
-    } else {
-        result("iOS " + UIDevice.current.systemVersion)
+    switch call.method {
+    case "sendVideoWithDefaultApp":
+        _arguments = call.arguments as! [String : Any];
+      #if targetEnvironment(simulator)
+        result(FlutterError(
+            code: "message_not_sent",
+            message: "Cannot send message on this device!",
+            details: "Cannot send SMS and MMS on a Simulator. Test on a real device."
+          )
+        )
+      #else
+        if (MFMessageComposeViewController.canSendText()) {
+          self.result = result
+          let controller = MFMessageComposeViewController()
+          controller.body = _arguments["message"] as? String
+          controller.recipients = _arguments["recipientNumbers"] as? [String]
+          controller.messageComposeDelegate = self
+          UIApplication.shared.keyWindow?.rootViewController?.present(controller, animated: true, completion: nil)
+        } else {
+          result(FlutterError(
+              code: "device_not_capable",
+              message: "The current device is not capable of sending text messages.",
+              details: "A device may be unable to send messages if it does not support messaging or if it is not currently configured to send messages. This only applies to the ability to send text messages via iMessage, SMS, and MMS."
+            )
+          )
+        }
+      #endif
+
+    default:
+        result(FlutterMethodNotImplemented)
+      break
     }
+  }
+
+  public func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+    let map: [MessageComposeResult: String] = [
+        MessageComposeResult.sent: "sent",
+        MessageComposeResult.cancelled: "cancelled",
+        MessageComposeResult.failed: "failed",
+    ]
+    if let callback = self.result {
+        callback(map[result])
+    }
+    UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
   }
 }

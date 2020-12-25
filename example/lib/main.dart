@@ -139,7 +139,7 @@ class _MyAppState extends State<MyApp> {
       Permission.sms.request().isGranted.then((value) {
 
         // Add phone number(s) as a string here in a list (e.g. ['123-456-7890'])
-        Mms().sendVideoWithDefaultApp(null, _videoPath, ['1234567890']);
+        Mms().sendVideoWithDefaultApp("Test", _videoPath, ['1234567890']);
       });
     });
   }
@@ -150,8 +150,13 @@ class _MyAppState extends State<MyApp> {
       return null;
     }
 
-    final Directory extDir = await getExternalStorageDirectory();
-    final String dirPath = '${extDir.path}/Movies/flutter_test';
+    Directory baseDir;
+    if (Platform.isIOS) {
+      baseDir = await getApplicationDocumentsDirectory();
+    } else {
+      baseDir = await getExternalStorageDirectory();
+    }
+    final String dirPath = '${baseDir.path}/Movies/flutter_test';
     await Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.mp4';
 
