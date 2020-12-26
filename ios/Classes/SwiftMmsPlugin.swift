@@ -24,17 +24,24 @@ public class SwiftMmsPlugin: NSObject, FlutterPlugin, UINavigationControllerDele
           )
         )
       #else
-        if (MFMessageComposeViewController.canSendText()) {
+      if (MFMessageComposeViewController.canSendText() && MFMessageComposeViewController.canSendAttachments()) {
           self.result = result
           let controller = MFMessageComposeViewController()
           controller.body = _arguments["message"] as? String
+        
+          do {
+            try controller.addAttachmentData(NSData(contentsOfFile:  _arguments["videoFilePath"] as! String) as Data, typeIdentifier: "public.movie", filename: "video.mp4")
+          } catch {
+
+          }
           controller.recipients = _arguments["recipientNumbers"] as? [String]
+          controller.delegate = self
           controller.messageComposeDelegate = self
           UIApplication.shared.keyWindow?.rootViewController?.present(controller, animated: true, completion: nil)
         } else {
           result(FlutterError(
               code: "device_not_capable",
-              message: "The current device is not capable of sending text messages.",
+              message: "The current device is not capable of sending MMS.",
               details: "A device may be unable to send messages if it does not support messaging or if it is not currently configured to send messages. This only applies to the ability to send text messages via iMessage, SMS, and MMS."
             )
           )
